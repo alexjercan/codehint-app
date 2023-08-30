@@ -5,10 +5,7 @@
 
 <svelte:head>
 	<title>Account</title>
-	<meta
-		name="description"
-		content="Page that allows user to manage their accounts."
-	/>
+	<meta name="description" content="Page that allows user to manage their accounts." />
 </svelte:head>
 
 <SignedIn let:user>
