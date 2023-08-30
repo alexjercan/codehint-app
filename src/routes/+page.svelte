@@ -1,7 +1,17 @@
-<h1 class="text-3xl font-bold underline">Hello world!</h1>
+<script lang="ts">
+	import { SignedIn } from "sveltefire";
+	import CodeHint from "$lib/components/CodeHint.svelte";
+</script>
 
-<style lang="postcss">
-	:global(html) {
-		background-color: theme(colors.gray.100);
-	}
-</style>
+<svelte:head>
+	<title>Code Hint</title>
+	<meta
+		name="description"
+		content="Dashboard that allows users to generate hints for bugs in
+        source code."
+	/>
+</svelte:head>
+
+<SignedIn>
+	<CodeHint />
+</SignedIn>
