@@ -1,5 +1,6 @@
 <script lang="ts">
 	import { SignedIn } from "sveltefire";
+	import { firestore } from "$lib/firebase";
 	import CodeHint from "$lib/components/CodeHint.svelte";
 </script>
 
@@ -12,6 +13,6 @@
 	/>
 </svelte:head>
 
-<SignedIn>
-	<CodeHint />
+<SignedIn let:user>
+	<CodeHint {user} {firestore} />
 </SignedIn>

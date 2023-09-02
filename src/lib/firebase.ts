@@ -1,8 +1,9 @@
 import { initializeApp } from "firebase/app";
 import { getAnalytics } from "firebase/analytics";
-import { getFirestore } from "firebase/firestore";
+import { getFirestore, getDoc, setDoc, doc } from "firebase/firestore";
 import {
 	getAuth,
+	onAuthStateChanged,
 	signInWithPopup,
 	signInAnonymously,
 	GoogleAuthProvider,
@@ -25,6 +26,15 @@ const app = initializeApp(firebaseConfig);
 export const analytics = app.name && typeof window !== "undefined" ? getAnalytics(app) : null;
 export const firestore = getFirestore(app);
 export const auth = getAuth(app);
+
+onAuthStateChanged(auth, async (user) => {
+	if (user) {
+		const userDoc = await getDoc(doc(firestore, "codehint", user.uid));
+		if (!userDoc.exists()) {
+			setDoc(doc(firestore, "codehint", user.uid), { credits: 10 });
+		}
+	}
+});
 
 export async function signInWithGoogle() {
 	const credential = signInWithPopup(auth, new GoogleAuthProvider());

@@ -1,5 +1,10 @@
 <script lang="ts">
 	import { onMount } from "svelte";
+	import { getDoc, setDoc, doc, Firestore } from "firebase/firestore";
+	import type { User } from "sveltefire";
+
+	export let user: User;
+	export let firestore: Firestore;
 
 	let editor = null;
 	let model = "openai";
@@ -18,6 +23,13 @@
 		const result = await response.text();
 
 		if (response.ok) {
+			const userRef = doc(firestore, "codehint", user.uid);
+
+			const userSnap = await getDoc(userRef);
+			const credits = userSnap.data()?.credits;
+
+			setDoc(userRef, { credits: credits - 1 });
+
 			return result;
 		} else {
 			throw new Error(result);
