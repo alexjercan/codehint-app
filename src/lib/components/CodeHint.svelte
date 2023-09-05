@@ -3,14 +3,25 @@
 	import { getDoc, setDoc, doc, Firestore } from "firebase/firestore";
 	import type { User } from "sveltefire";
 
+	type Bug = {
+		line: number;
+		bug: string;
+		hint: string;
+	};
+
+	type Hint = {
+		analysis: string;
+		bugs: Bug[];
+	};
+
 	export let user: User;
 	export let firestore: Firestore;
 
 	let editor = null;
 	let model = "openai";
-	let hint: Promise<string> = Promise.resolve("");
+	let hint: Promise<Hint> | null = null;
 
-	async function getHint() {
+	async function getHint(): Promise<Hint> {
 		let code = editor.getValue();
 
 		const response = await fetch("/api/hint", {
@@ -20,7 +31,7 @@
 			},
 			body: JSON.stringify({ code, model })
 		});
-		const result = await response.text();
+		const result = await response.json();
 
 		if (response.ok) {
 			const userRef = doc(firestore, "codehint", user.uid);
@@ -30,7 +41,7 @@
 
 			setDoc(userRef, { credits: credits - 1 });
 
-			return result;
+			return result as Hint;
 		} else {
 			throw new Error(result);
 		}
@@ -53,7 +64,7 @@
 	});
 </script>
 
-<div class="w-full h-full flex flex-col justify-start items-center space-y-4">
+<div class="w-1/2 h-full flex flex-col justify-start items-center space-y-4">
 	<label for="model">Select a Model:</label>
 	<select id="model" class="select w-full max-w-xs" bind:value={model}>
 		<option value="openai">OpenAI</option>
@@ -68,7 +79,27 @@
 	{#await hint}
 		<p>Waiting for hint...</p>
 	{:then hint}
-		<p>{hint}</p>
+		{#if hint}
+			<div class="w-full flex flex-col justify-start items-center space-y-4">
+				<h3 class="text-xl font-bold">Analysis:</h3>
+				<p>{hint.analysis}</p>
+			</div>
+			<div class="w-full flex flex-col justify-start items-center space-y-4">
+				<h3 class="text-xl font-bold">Bugs:</h3>
+				{#each hint.bugs as bug}
+					<div>
+						<div class="w-full flex flex-row justify-center items-center space-x-4">
+							<p class="font-bold">Line {bug.line}:</p>
+							<p>{bug.bug}</p>
+						</div>
+						<div class="w-full flex flex-row justify-center items-center space-x-4">
+							<p class="font-bold">Hint:</p>
+							<p>{bug.hint}</p>
+						</div>
+					</div>
+				{/each}
+			</div>
+		{/if}
 	{:catch error}
 		<p class="text-red-500">{error.message}</p>
 	{/await}
@@ -77,7 +108,7 @@
 <style>
 	#editor {
 		position: relative;
-		width: 500px;
+		width: 100%;
 		height: 400px;
 	}
 </style>
