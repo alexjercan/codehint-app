@@ -1,5 +1,5 @@
 import OpenAI from "openai";
-import { SECRET_OPENAI_API_KEY } from '$env/static/private';
+import { SECRET_OPENAI_API_KEY } from "$env/static/private";
 
 const SYSTEM = `You are an expert software  developer. Your job is to find the
 bugs in the given source code. First you have to provide a step by step
