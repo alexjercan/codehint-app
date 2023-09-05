@@ -1,4 +1,5 @@
 import OpenAI from "openai";
+import { SECRET_OPENAI_API_KEY } from '$env/static/private';
 
 const SYSTEM = `You are an expert software  developer. Your job is to find the
 bugs in the given source code. First you have to provide a step by step
@@ -44,7 +45,7 @@ Do NOT use any explanation text except the JSON output.
 `;
 
 export async function generate(code: string) {
-	const openai = new OpenAI();
+	const openai = new OpenAI({ apiKey: SECRET_OPENAI_API_KEY });
 
 	const completion = await openai.chat.completions.create({
 		messages: [
