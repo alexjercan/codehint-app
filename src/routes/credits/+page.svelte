@@ -7,8 +7,7 @@
 	<title>Credits</title>
 	<meta
 		name="description"
-		content="Page that allows users to buy credits for
-    the web application."
+		content="Page that allows users to buy credits for the web application."
 	/>
 </svelte:head>
 

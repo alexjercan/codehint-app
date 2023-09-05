@@ -9,7 +9,7 @@
 	<meta
 		name="description"
 		content="Dashboard that allows users to generate hints for bugs in
-        source code."
+        source code using AI."
 	/>
 </svelte:head>
 
