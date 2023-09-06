@@ -31,7 +31,8 @@ onAuthStateChanged(auth, async (user) => {
 	if (user) {
 		const userDoc = await getDoc(doc(firestore, "codehint", user.uid));
 		if (!userDoc.exists()) {
-			setDoc(doc(firestore, "codehint", user.uid), { credits: 10 });
+			const apiKey = generateUUID();
+			setDoc(doc(firestore, "codehint", user.uid), { credits: 10, apiKey });
 		}
 	}
 });
@@ -58,4 +59,20 @@ async function loginHandler(promise: Promise<UserCredential>) {
 
 export async function firebaseSignOut() {
 	await signOut(auth);
+}
+
+export function generateUUID() {
+	var d = new Date().getTime();
+
+	if (window.performance && typeof window.performance.now === "function") {
+		d += performance.now();
+	}
+
+	var uuid = "xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx".replace(/[xy]/g, function (c) {
+		var r = (d + Math.random() * 16) % 16 | 0;
+		d = Math.floor(d / 16);
+		return (c == "x" ? r : (r & 0x3) | 0x8).toString(16);
+	});
+
+	return uuid;
 }

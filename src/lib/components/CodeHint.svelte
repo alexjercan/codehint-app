@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { onMount } from "svelte";
-	import { getDoc, setDoc, doc, Firestore } from "firebase/firestore";
+	import { getDoc, setDoc, doc, Firestore, increment, updateDoc } from "firebase/firestore";
 	import type { User } from "sveltefire";
 
 	type Bug = {
@@ -24,22 +24,21 @@
 	async function getHint(): Promise<Hint> {
 		let code = editor.getValue();
 
+		const userDoc = doc(firestore, "codehint", user.uid);
+		const userSnap = await getDoc(userDoc);
+		const apiKey = userSnap.data()?.apiKey;
+
 		const response = await fetch("/api/hint", {
 			method: "POST",
 			headers: {
 				"Content-Type": "application/json"
 			},
-			body: JSON.stringify({ code, model })
+			body: JSON.stringify({ code, model, apiKey })
 		});
 		const result = await response.json();
 
 		if (response.ok) {
-			const userRef = doc(firestore, "codehint", user.uid);
-
-			const userSnap = await getDoc(userRef);
-			const credits = userSnap.data()?.credits;
-
-			setDoc(userRef, { credits: credits - 1 });
+			updateDoc(userDoc, { credits: increment(-1) });
 
 			return result as Hint;
 		} else {
