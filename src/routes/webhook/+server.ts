@@ -22,11 +22,12 @@ function toBuffer(ab: ArrayBuffer): Buffer {
 async function handleStripeEvent(event: Stripe.Event) {
 	switch (event.type) {
 		case "checkout.session.completed":
-			const client_reference_id = (event.data.object as Stripe.Checkout.Session).client_reference_id;
-            if (client_reference_id) {
-                const userDoc = doc(firestore, "codehint", client_reference_id);
-                updateDoc(userDoc, { credits: increment(100) });
-            }
+			const client_reference_id = (event.data.object as Stripe.Checkout.Session)
+				.client_reference_id;
+			if (client_reference_id) {
+				const userDoc = doc(firestore, "codehint", client_reference_id);
+				updateDoc(userDoc, { credits: increment(100) });
+			}
 			break;
 	}
 }
