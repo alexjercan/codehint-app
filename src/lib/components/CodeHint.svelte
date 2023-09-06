@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { onMount } from "svelte";
-	import { getDoc, setDoc, doc, Firestore, increment, updateDoc } from "firebase/firestore";
+	import { getDoc, doc, Firestore } from "firebase/firestore";
 	import type { User } from "sveltefire";
 
 	type Bug = {
@@ -38,8 +38,6 @@
 		const result = await response.json();
 
 		if (response.ok) {
-			updateDoc(userDoc, { credits: increment(-1) });
-
 			return result as Hint;
 		} else {
 			throw new Error(result);

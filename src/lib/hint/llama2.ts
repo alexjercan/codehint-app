@@ -43,7 +43,16 @@ which requires an int. You can use the int function to fix that and use \
 Do NOT use any explanation text except the JSON output.
 `;
 
-export async function generate(code: string) {
+type Hint = {
+    analysis: string;
+    bugs: {
+        line: number;
+        bug: string;
+        hint: string;
+    }[];
+};
+
+export async function generate(code: string): Promise<Hint> {
 	const app = await client("https://ysharma-explore-llamav2-with-tgi.hf.space/", {});
 	const result = (await app.predict("/chat_1", [
 		`<s>[INST] <<SYS>>\n${SYSTEM}\n<</SYS>>\n\n${code}[/INST]`

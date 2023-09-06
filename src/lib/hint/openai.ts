@@ -44,7 +44,16 @@ which requires an int. You can use the int function to fix that and use \
 Do NOT use any explanation text except the JSON output.
 `;
 
-export async function generate(code: string) {
+type Hint = {
+    analysis: string;
+    bugs: {
+        line: number;
+        bug: string;
+        hint: string;
+    }[];
+};
+
+export async function generate(code: string): Promise<Hint> {
 	const openai = new OpenAI({ apiKey: SECRET_OPENAI_API_KEY });
 
 	const completion = await openai.chat.completions.create({
