@@ -45,7 +45,7 @@ Do NOT use any explanation text except the JSON output.
 
 export async function generate(code: string) {
 	const app = await client("https://ysharma-explore-llamav2-with-tgi.hf.space/", {});
-	const result = (await app.predict("/chat", [
+	const result = (await app.predict("/chat_1", [
 		`<s>[INST] <<SYS>>\n${SYSTEM}\n<</SYS>>\n\n${code}[/INST]`
 	])) as string;
 

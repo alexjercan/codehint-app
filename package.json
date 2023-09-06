@@ -15,6 +15,7 @@
 		"test:unit": "vitest"
 	},
 	"devDependencies": {
+		"@gradio/client": "^0.3.0",
 		"@playwright/test": "^1.28.1",
 		"@sveltejs/adapter-auto": "^2.0.0",
 		"@sveltejs/kit": "^1.20.4",
@@ -39,7 +40,6 @@
 	},
 	"type": "module",
 	"dependencies": {
-		"@gradio/client": "^0.2.1",
 		"ace-builds": "^1.24.1",
 		"firebase": "^9.23.0",
 		"openai": "^4.3.1",
