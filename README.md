@@ -1,38 +1,30 @@
-# create-svelte
+# CodeHint WebApp
 
-Everything you need to build a Svelte project, powered by [`create-svelte`](https://github.com/sveltejs/kit/tree/master/packages/create-svelte).
+Web application that allows you to check for bugs in your code using LLMs.
 
-## Creating a project
+### Quickstart
 
-If you're seeing this, you've probably already done this step. Congrats!
+This project requires you to setup a firebase backend service and use firestore
+database. You will also need to setup a Stripe account and setup the product to
+allow users to add more credits.
 
-```bash
-# create a new project in the current directory
-npm create svelte@latest
-
-# create a new project in my-app
-npm create svelte@latest my-app
-```
-
-## Developing
-
-Once you've created a project and installed dependencies with `npm install` (or `pnpm install` or `yarn`), start a development server:
-
-```bash
+```console
+npm install
 npm run dev
-
-# or start the server and open the app in a new browser tab
-npm run dev -- --open
 ```
 
-## Building
+### Firebase
 
-To create a production version of your app:
+You can find some details in the `.firebaserc` related files
 
-```bash
-npm run build
+- The application uses the `Authentication` service: Google provider
+- The application uses the `Firestore Database` service
+
+Probably you will want to run
+
+```console
+firebase init
 ```
 
-You can preview the production build with `npm run preview`.
-
-> To deploy your app, you may need to install an [adapter](https://kit.svelte.dev/docs/adapters) for your target environment.
+here choose only `firestore` and setup your own project. Also don't forget to
+change the config from `./src/lib/firebase.ts` to match your own public keys.
