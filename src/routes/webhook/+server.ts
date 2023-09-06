@@ -1,4 +1,4 @@
-import { setDoc, getDoc, doc } from "firebase/firestore";
+import { doc, updateDoc, increment } from "firebase/firestore";
 import { firestore } from "$lib/firebase";
 import { error, json, type RequestEvent } from "@sveltejs/kit";
 import Stripe from "stripe";
@@ -22,12 +22,11 @@ function toBuffer(ab: ArrayBuffer): Buffer {
 async function handleStripeEvent(event: Stripe.Event) {
 	switch (event.type) {
 		case "checkout.session.completed":
-			const client_reference_id: string = (event.data.object as any).client_reference_id!;
-			const userDoc = doc(firestore, "codehint", client_reference_id);
-			const userSnap = await getDoc(userDoc);
-			const user = userSnap.data();
-			const credits: number = user?.credits;
-			setDoc(userDoc, { credits: credits + 100 });
+			const client_reference_id = (event.data.object as Stripe.Checkout.Session).client_reference_id;
+            if (client_reference_id) {
+                const userDoc = doc(firestore, "codehint", client_reference_id);
+                updateDoc(userDoc, { credits: increment(100) });
+            }
 			break;
 	}
 }
