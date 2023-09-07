@@ -45,16 +45,12 @@ Do NOT use any explanation text except the JSON output.
 `;
 
 type Hint = {
-    analysis: string;
-    bugs: {
-        line: number;
-        bug: string;
-        hint: string;
-    }[];
-};
-
-export const config = {
-	runtime: 'edge'
+	analysis: string;
+	bugs: {
+		line: number;
+		bug: string;
+		hint: string;
+	}[];
 };
 
 export async function generate(code: string): Promise<Hint> {
@@ -74,7 +70,7 @@ export async function generate(code: string): Promise<Hint> {
 		model: "gpt-3.5-turbo"
 	});
 
-    const content = completion.choices[0].message.content ?? "";
+	const content = completion.choices[0].message.content ?? "";
 
-    return JSON.parse(content);
+	return JSON.parse(content);
 }

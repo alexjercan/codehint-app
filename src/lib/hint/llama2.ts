@@ -44,12 +44,12 @@ Do NOT use any explanation text except the JSON output.
 `;
 
 type Hint = {
-    analysis: string;
-    bugs: {
-        line: number;
-        bug: string;
-        hint: string;
-    }[];
+	analysis: string;
+	bugs: {
+		line: number;
+		bug: string;
+		hint: string;
+	}[];
 };
 
 export async function generate(code: string): Promise<Hint> {

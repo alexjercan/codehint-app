@@ -20,20 +20,20 @@ function toBuffer(ab: ArrayBuffer): Buffer {
 }
 
 async function handleStripeEvent(event: Stripe.Event) {
-    console.log(`Received Stripe event: ${event.type}`);
+	console.log(`Received Stripe event: ${event.type}`);
 
 	switch (event.type) {
 		case "checkout.session.completed":
 			const client_reference_id = (event.data.object as Stripe.Checkout.Session)
 				.client_reference_id;
 
-            console.log(`Checkout session completed for ${client_reference_id}`);
+			console.log(`Checkout session completed for ${client_reference_id}`);
 
 			if (client_reference_id) {
 				const userDoc = doc(firestore, "codehint", client_reference_id);
 				updateDoc(userDoc, { credits: increment(100) });
 
-                console.log(`Added 100 credits to ${client_reference_id}`);
+				console.log(`Added 100 credits to ${client_reference_id}`);
 			}
 			break;
 	}
