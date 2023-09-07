@@ -18,15 +18,9 @@ async function handleCode(code: string, model: string) {
 export async function POST({ request }: RequestEvent) {
 	const { code, model, apiKey } = await request.json();
 
-    console.log(code);
-
 	const codehintCollection = collection(firestore, "codehint");
-    console.log("1");
 	const userQuery = query(codehintCollection, where("apiKey", "==", apiKey));
-    console.log("2");
 	const userDocs = await getDocs(userQuery);
-    console.log("3");
-
 	if (userDocs.empty) {
 		throw error(400, "Invalid API key");
 	}
