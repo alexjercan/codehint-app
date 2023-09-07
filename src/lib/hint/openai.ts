@@ -53,6 +53,10 @@ type Hint = {
     }[];
 };
 
+export const config = {
+	runtime: 'edge'
+};
+
 export async function generate(code: string): Promise<Hint> {
 	const openai = new OpenAI({ apiKey: SECRET_OPENAI_API_KEY });
 
