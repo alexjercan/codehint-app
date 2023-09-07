@@ -1,23 +1,19 @@
 import { error, json, type RequestEvent } from "@sveltejs/kit";
 import { generate as generateOpenai } from "$lib/hint/openai";
-// import { generate as generateLlama2 } from "$lib/hint/llama2";
+import { generate as generateLlama2 } from "$lib/hint/llama2";
 import { getDocs, where, collection, query, updateDoc, increment } from "firebase/firestore";
 import { firestore } from "$lib/firebase";
 
 async function handleCode(code: string, model: string) {
 	switch (model) {
-		// case "llama2":
-		// 	return await generateLlama2(code);
+		case "llama2":
+		    return await generateLlama2(code);
 		case "openai":
 			return await generateOpenai(code);
 		default:
 			throw new Error("Invalid model");
 	}
 }
-
-export const config = {
-	runtime: "edge"
-};
 
 export async function POST({ request }: RequestEvent) {
 	const { code, model, apiKey } = await request.json();
@@ -30,9 +26,7 @@ export async function POST({ request }: RequestEvent) {
 	}
 
 	try {
-		console.time("handleCode");
 		const hint = await handleCode(code, model);
-		console.timeEnd("handleCode");
 
 		const userDoc = userDocs.docs[0].ref;
 		updateDoc(userDoc, { credits: increment(-1) });
