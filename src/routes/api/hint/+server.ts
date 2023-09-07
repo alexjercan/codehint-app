@@ -1,6 +1,6 @@
 import { error, json, type RequestEvent } from "@sveltejs/kit";
 import { generate as generateOpenai } from "$lib/hint/openai";
-import { generate as generateLlama2 } from "$lib/hint/llama2";
+// import { generate as generateLlama2 } from "$lib/hint/llama2";
 import { getDocs, where, collection, query, updateDoc, increment } from "firebase/firestore";
 import { firestore } from "$lib/firebase";
 
