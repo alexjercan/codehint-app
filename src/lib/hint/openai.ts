@@ -67,7 +67,7 @@ export async function generate(code: string): Promise<Hint> {
 				content: code
 			}
 		],
-		model: "gpt-3.5-turbo"
+		model: "gpt-4"
 	});
 
 	const content = completion.choices[0].message.content ?? "";
