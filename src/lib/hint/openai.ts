@@ -56,6 +56,8 @@ type Hint = {
 export async function generate(code: string): Promise<Hint> {
 	const openai = new OpenAI({ apiKey: SECRET_OPENAI_API_KEY });
 
+    console.log("Generating hint for code:", code);
+
 	const completion = await openai.chat.completions.create({
 		messages: [
 			{

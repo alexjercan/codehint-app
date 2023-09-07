@@ -26,6 +26,8 @@ export async function POST({ request }: RequestEvent) {
 	}
 
     try {
+        console.log(code);
+        console.log(model);
         const hint = await handleCode(code, model);
 
         const userDoc = userDocs.docs[0].ref;
